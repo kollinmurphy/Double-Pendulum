@@ -17,7 +17,7 @@ class Bob {
         this.clock = setInterval(function () {
             self.theta = calculate_theta(self.x, self.y, self.pivot.x, self.pivot.y);
             self.move_to_arc();
-
+            
             if (Math.abs(self.calculate_velocity()) < self.turnaround_sensitivity) { // detect direction changes
                 if (self.x < self.pivot.x && !self.cw) {
                     self.cw = true;
@@ -73,7 +73,7 @@ class Bob {
     }
 
     calculate_tension() {
-        return 9.8 * this.mass * Math.abs(Math.cos(this.theta * this.theta_dilation));
+        return this.mass * Math.abs(Math.cos(this.theta * this.theta_dilation));
     }
 
     calculate_velocity_x() {
@@ -87,7 +87,8 @@ class Bob {
     calculate_velocity() {
         // this.theta_dilation -= 0.00001; // air resistance? (not working very well)
         // console.log(this.theta_dilation);
-        return Math.sqrt(this.radius * this.calculate_tension() / this.mass) * 1.4; // speed factor?
+        // return Math.sqrt(this.radius * this.calculate_tension() / this.mass) * 1.4; // speed factor?
+        return 8 * Math.sqrt(this.radius * this.calculate_tension() / this.mass);
     }
 }
 
