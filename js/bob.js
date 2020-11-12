@@ -5,33 +5,36 @@ class Bob {
         this.pivot = pivot;
         this.theta = theta;
         this.radius = radius;
-        this.velocity_x = 0;
-        this.velocity_y = 0;
         this.cw = false;
 
-        let coords = calculate_xy(theta, radius);
-        this.x = this.pivot.x + coords[0];
-        this.y = this.pivot.y + coords[1];
+        this.move_to_arc();
         let self = this;
 
         this.clock = setInterval(function () {
             self.theta = calculate_theta(self.x, self.y, self.pivot.x, self.pivot.y);
-            let coords = calculate_xy(self.theta, self.radius);
-            if (Math.abs(self.calculate_velocity_x()) < 0.01) {
+            self.move_to_arc();
+
+            if (Math.abs(self.calculate_velocity_x()) < 0.01) { // detect direction changes
                 if (self.x < self.pivot.x) {
                     self.cw = true;
                 } else {
                     self.cw = false;
                 }
             }
-            if (self.cw) {
-                self.x = self.pivot.x + coords[0] + self.calculate_velocity_x() / 10;
-                self.y = self.pivot.y + coords[1] - self.calculate_velocity_y() / 10;
-            } else {
-                self.x = self.pivot.x + coords[0] - self.calculate_velocity_x() / 10;
-                self.y = self.pivot.y + coords[1] + self.calculate_velocity_y() / 10;
+
+            let vel_x = self.calculate_velocity_x() / 10; // calculate velocities
+            let vel_y = self.calculate_velocity_y() / 10;
+
+            if (self.cw) { // switch direction of velocity if moving clockwise
+                vel_x *= -1;
+                vel_y *= -1;
             }
-            self.painter.paint();
+
+            // set new coordinates to calculated coordinates plus pivot points plus velocity
+            self.x += vel_x; 
+            self.y += vel_y;
+
+            self.painter.paint(); // draw all objects onto the canvas
         }, 10);
     }
 
@@ -46,12 +49,18 @@ class Bob {
         ctx.fill();
     }
 
+    move_to_arc() {
+        // move to correct coordinates from polar coordinates
+        this.x = this.pivot.x + Math.sin(this.theta) * this.radius;
+        this.y = this.pivot.y + Math.cos(this.theta) * this.radius;
+    }
+
     calculate_tension() {
         return 9.8 * this.mass * Math.abs(Math.cos(this.theta));
     }
 
     calculate_velocity_x() {
-        return this.calculate_velocity() * Math.cos(this.theta);
+        return -this.calculate_velocity() * Math.cos(this.theta);
     }
 
     calculate_velocity_y() {
@@ -79,10 +88,4 @@ function calculate_theta(x, y, pivot_x, pivot_y) {
     if (theta < 0) { theta += Math.PI * 2; }
     if (theta > Math.PI * 2) { theta -= Math.PI * 2; }
     return theta;
-}
-
-function calculate_xy(theta, radius) {
-    let x = Math.sin(theta) * radius;
-    let y = Math.cos(theta) * radius;
-    return [x, y];
 }
