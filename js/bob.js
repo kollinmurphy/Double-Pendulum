@@ -20,11 +20,8 @@ class Bob {
             let acceleration_y = acceleration_vector * Math.sin(self.theta);
             self.velocity_x = acceleration_x;
             self.velocity_y = acceleration_y;
-            //self.velocity_x = acceleration_x;
-            //self.velocity_y = acceleration_y;
-            //self.velocity();
-            self.x += v_x(self, this.x, this.y, self.pivot.x, self.pivot.y) / 10;
-            self.y += v_y(self, this.x, this.y, self.pivot.x, self.pivot.y) / 10;
+            self.x += self.calculate_velocity_x(self, self.x, self.y, self.pivot.x, self.pivot.y) / 10;
+            self.y += self.calculate_velocity_y(self, self.x, self.y, self.pivot.x, self.pivot.y) / 10;
             self.painter.paint();
         }, 10);
     }
@@ -39,6 +36,18 @@ class Bob {
 
     calculate_tension() {
         return 9.8 * this.mass * Math.cos(this.theta);
+    }
+
+    calculate_velocity_x() { 
+        return this.calculate_velocity() * Math.cos(calculate_theta(this.x, this.y, this.pivot.x, this.pivot.y));
+    }
+    
+    calculate_velocity_y() { 
+        return this.calculate_velocity() * Math.sin(calculate_theta(this.x, this.y, this.pivot.x, this.pivot.y));
+    }
+
+    calculate_velocity() { 
+        return Math.sqrt(this.radius * this.calculate_tension());
     }
 }
 
@@ -60,21 +69,5 @@ function calculate_theta(x, y, pivot_x, pivot_y) {
     return theta;
 }
 
-function radius(x1, x2, y1, y2) {
-    let x = x1 - x2;
-    let y = y1 - y2;
-    return Math.sqrt((x * 2) + (y * 2));
-}
 
-function v_x(self, x, y, x2, y2) { 
-    return velocity(self) * Math.cos(calculate_theta(x, y, x2, y2));
-}
-
-function v_y(self, x, y, x2, y2) { 
-    return velocity(self) * Math.sin(calculate_theta(x, y, x2, y2));
-}
-
-function velocity(self) { 
-    return Math.sqrt(radius() * self.calculate_tension());
-}
 
