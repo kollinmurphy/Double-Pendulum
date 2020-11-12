@@ -19,15 +19,11 @@ class Bob {
             self.velocity_x = acceleration_x;
             self.velocity_y = acceleration_y;
             self.velocity();
-            self.x += self.velocity_x / 10;
-            self.y += self.velocity_y / 10;
-            self.painter.paint();
             //self.velocity_x = acceleration_x;
             //self.velocity_y = acceleration_y;
             //self.velocity();
             self.x += self.v_x() / 10;
             self.y += self.v_y() / 10;
-            self.draw();
         }, 10);
 
         
