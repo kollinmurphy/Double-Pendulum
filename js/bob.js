@@ -10,7 +10,7 @@ class Bob {
         this.theta = calculate_theta(this.x, this.y, this.pivot.x, this.pivot.y);
 
         this.theta_dilation = this.calculate_dilation();
-        this.turnaround_sensitivity = 1.5;
+        this.turnaround_sensitivity = this.calculate_turnaround_sensitivity();
         this.cw = false;
         
         let self = this;
@@ -68,6 +68,10 @@ class Bob {
         return Math.PI / (2 * this.theta);
     }
 
+    calculate_turnaround_sensitivity() {
+        return 1.2 / (this.theta - 0.1) + 1;
+    }
+
     calculate_tension() {
         return 9.8 * this.mass * Math.abs(Math.cos(this.theta * this.theta_dilation));
     }
@@ -81,7 +85,9 @@ class Bob {
     }
 
     calculate_velocity() {
-        return Math.sqrt(this.radius * this.calculate_tension() / this.mass);
+        // this.theta_dilation -= 0.00001; // air resistance? (not working very well)
+        // console.log(this.theta_dilation);
+        return Math.sqrt(this.radius * this.calculate_tension() / this.mass) * 1.4; // speed factor?
     }
 }
 
