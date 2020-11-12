@@ -8,18 +8,18 @@ class Bob {
         this.x = 460;
         this.y = 120;
         let self = this; 
-
+        this.radius = this.radius(this.x, 360, this.y, 260);
         this.clock = setInterval(function () {
             const G = 9.8;
             self.theta = calculate_theta(self.x, self.y, 360, 260);
             let acceleration_vector = G * self.mass * Math.sin(self.theta);
             let acceleration_x = -acceleration_vector * Math.cos(self.theta);
             let acceleration_y = acceleration_vector * Math.sin(self.theta);
-            self.velocity_x = acceleration_x;
-            self.velocity_y = acceleration_y;
-            self.velocity();
-            self.x += self.velocity_x / 10;
-            self.y += self.velocity_y / 10;
+            //self.velocity_x = acceleration_x;
+            //self.velocity_y = acceleration_y;
+            //self.velocity();
+            self.x += self.v_x() / 10;
+            self.y += self.v_y() / 10;
             self.draw();
         }, 10);
 
@@ -27,9 +27,16 @@ class Bob {
         this.draw();
     }
 
-    velocity() {
-
+    radius(x1, x2, y1, y2) {
+        let x = x1 - x2;
+        let y = y1 - y2;
+        return Math.sqrt((x*2)+(y*2));
     }
+
+    v_x(){return velocity() * Math.cos(self.calculate_theta(self.x, self.y, 360, 260))}
+    v_y(){return velocity() * Math.sin(self.calculate_theta(self.x, self.y, 360, 260))}
+
+    velocity() {return Math.sqrt(self.radius() * self.calculate_tension() / self.mass)}
 
     draw() {
         this.ctx.clearRect(0, 0, 720, 720);
