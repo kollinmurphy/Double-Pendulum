@@ -3,27 +3,25 @@ class Bob {
         this.painter = painter;
         this.mass = mass;
         this.pivot = pivot;
-        this.theta = theta;
+
+        this.theta = theta; // set theta and radius, move to correct x/y coordinates, then recalculate theta to be in correct domain
         this.radius = radius;
-        console.log(theta);
-        console.log(theta / Math.PI * 2);
-        this.theta_dilation = Math.PI / (2 * theta);
-        // this.theta_dilation = 1;
+        this.move_to_arc();
+        this.theta = calculate_theta(this.x, this.y, this.pivot.x, this.pivot.y);
+
+        this.theta_dilation = this.calculate_dilation();
         this.turnaround_sensitivity = 1.5;
         this.cw = false;
-
-        this.move_to_arc();
+        
         let self = this;
-
         this.clock = setInterval(function () {
             self.theta = calculate_theta(self.x, self.y, self.pivot.x, self.pivot.y);
             self.move_to_arc();
 
             if (Math.abs(self.calculate_velocity()) < self.turnaround_sensitivity) { // detect direction changes
-                console.log("switch")
-                if (self.x < self.pivot.x) {
+                if (self.x < self.pivot.x && !self.cw) {
                     self.cw = true;
-                } else {
+                } else if (self.x > self.pivot.x && self.cw) {
                     self.cw = false;
                 }
             }
@@ -65,6 +63,11 @@ class Bob {
         this.painter.paint();
     }
 
+    calculate_dilation() {
+        // calculate factor that will cause bob to rise to correct angle
+        return Math.PI / (2 * this.theta);
+    }
+
     calculate_tension() {
         return 9.8 * this.mass * Math.abs(Math.cos(this.theta * this.theta_dilation));
     }
@@ -97,5 +100,10 @@ function calculate_theta(x, y, pivot_x, pivot_y) {
 
     if (theta < 0) { theta += Math.PI * 2; }
     if (theta > Math.PI * 2) { theta -= Math.PI * 2; }
+
+    if (theta > Math.PI) { // convert angles greater than pi to negative angles
+        theta -= Math.PI * 2;
+    }
+
     return theta;
 }
