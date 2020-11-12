@@ -5,7 +5,7 @@ class Bob {
         this.theta = theta;
         this.velocity_x = velocity_x;
         this.velocity_y = velocity_y;
-        this.x = 260;
+        this.x = 460;
         this.y = 120;
         let self = this; 
 
@@ -33,7 +33,7 @@ class Bob {
 
     draw() {
         this.ctx.clearRect(0, 0, 720, 720);
-        this.ctx.fillText(this.theta, 100,100);
+        this.ctx.fillText(this.theta, 100, 100);
 
         this.ctx.fillStyle = "red";
         this.ctx.beginPath();
@@ -55,9 +55,16 @@ function calculate_theta(x, y, pivot_x, pivot_y) {
     let diff_x = x - pivot_x;
     let diff_y = y - pivot_y;
     let theta = Math.atan(diff_x / diff_y);
-    theta += Math.PI;
-    if (theta > Math.PI * 2) {
-        theta -= Math.PI * 2;
-    }
+
+    if (diff_x < 0 && diff_y < 0) { theta = (Math.PI) + theta; } // adjust for quadrant I
+    if (diff_x > 0 && diff_y < 0) { theta = theta - Math.PI; } // adjust for quadrant II
+
+    if (diff_y === 0 && diff_x < 0) { theta = 3 * Math.PI / 2; } // adjust for axes
+    if (diff_y === 0 && diff_x > 0) { theta = Math.PI / 2; }
+    if (diff_x === 0 && diff_y > 0) { theta = Math.PI; }
+    if (diff_x === 0 && diff_y < 0) { theta = 0; }
+
+    if (theta < 0) { theta += Math.PI * 2; }
+    if (theta > Math.PI * 2) { theta -= Math.PI * 2; }
     return theta;
 }
