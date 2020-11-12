@@ -7,10 +7,10 @@ class Bob {
         this.radius = radius;
         this.velocity_x = 0;
         this.velocity_y = 0;
-        this.x = 460;
-        this.y = 120;
+        this.x = this.pivot.x + (radius * Math.cos(theta));
+        this.y = this.pivot.y + (radius * Math.sin(theta));
         let self = this;
-        this.radius = radius(this.x, 360, this.y, 260);
+        
 
         this.clock = setInterval(function () {
             const G = 9.8;
