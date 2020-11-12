@@ -22,8 +22,8 @@ class Bob {
             //self.velocity_x = acceleration_x;
             //self.velocity_y = acceleration_y;
             //self.velocity();
-            self.x += self.v_x() / 10;
-            self.y += self.v_y() / 10;
+            self.x += v_x(this.x, this.y, self.pivot.x, self.pivot.y) / 10;
+            self.y += v_y(this.x, this.y, self.pivot.x, self.pivot.y) / 10;
         }, 10);
 
         
