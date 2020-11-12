@@ -17,7 +17,6 @@ class Bob {
         this.clock = setInterval(function () {
             self.theta = calculate_theta(self.x, self.y, self.pivot.x, self.pivot.y);
             let coords = calculate_xy(self.theta, self.radius);
-            self.x = self.pivot.x + coords[0] - self.calculate_velocity_x() / 10;
             if (Math.abs(self.calculate_velocity_x()) < 0.01) {
                 if (self.x < self.pivot.x) {
                     self.cw = true;
@@ -26,9 +25,11 @@ class Bob {
                 }
             }
             if (self.cw) {
-                self.y = self.pivot.y + coords[1] + self.calculate_velocity_y() / 10;
-            } else {
+                self.x = self.pivot.x + coords[0] + self.calculate_velocity_x() / 10;
                 self.y = self.pivot.y + coords[1] - self.calculate_velocity_y() / 10;
+            } else {
+                self.x = self.pivot.x + coords[0] - self.calculate_velocity_x() / 10;
+                self.y = self.pivot.y + coords[1] + self.calculate_velocity_y() / 10;
             }
             self.painter.paint();
         }, 10);
@@ -36,12 +37,11 @@ class Bob {
 
     draw(ctx) {
         ctx.strokeStyle = "black";
-        // ctx.moveTo(this.x, (this.y > this.pivot.y) ? this.y : this.pivot.y * 2 - this.y);
-        // ctx.lineTo(this.pivot.x, this.pivot.y);
-        // ctx.stroke();
+        ctx.moveTo(this.x, (this.y > this.pivot.y) ? this.y : this.pivot.y * 2 - this.y);
+        ctx.lineTo(this.pivot.x, this.pivot.y);
+        ctx.stroke();
         ctx.fillStyle = "red";
         ctx.beginPath();
-        // ctx.arc(this.x, (this.y > this.pivot.y) ? this.y : this.pivot.y * 2 - this.y, 15, 0, Math.PI * 2);
         ctx.arc(this.x, this.y, 15, 0, Math.PI * 2);
         ctx.fill();
     }
