@@ -1,7 +1,9 @@
 window.onload = function() {
-    var bob = new Bob(document.querySelector("#mainCanvas").getContext("2d"), 1, Math.PI / 3, 0, 0);
+    let cvs = document.querySelector("#mainCanvas");
+    var painter = new Painter(cvs);
+    var pivot = new Pivot(360, 260);
+    var bob = new Bob(painter, 1, pivot, Math.PI / 3);
 
-    window.addEventListener("mousemove", function(e) {
-        console.log(calculate_theta(e.clientX, e.clientY, 360, 260));
-    });
+    painter.addObject(pivot);
+    painter.addObject(bob);
 };

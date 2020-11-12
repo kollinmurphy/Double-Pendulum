@@ -1,10 +1,11 @@
 class Bob {
-    constructor(ctx, mass, theta, velocity_x, velocity_y) {
-        this.ctx = ctx;
+    constructor(painter, mass, pivot, theta) {
+        this.painter = painter;
         this.mass = mass;
+        this.pivot = pivot;
         this.theta = theta;
-        this.velocity_x = velocity_x;
-        this.velocity_y = velocity_y;
+        this.velocity_x = 0;
+        this.velocity_y = 0;
         this.x = 460;
         this.y = 120;
         let self = this; 
@@ -20,30 +21,23 @@ class Bob {
             self.velocity();
             self.x += self.velocity_x / 10;
             self.y += self.velocity_y / 10;
-            self.draw();
+            self.painter.paint();
         }, 10);
 
         
-        this.draw();
+        // this.draw();
     }
 
     velocity() {
 
     }
 
-    draw() {
-        this.ctx.clearRect(0, 0, 720, 720);
-        this.ctx.fillText(this.theta, 100, 100);
-
-        this.ctx.fillStyle = "red";
-        this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, 15, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        this.ctx.fillStyle = "blue";
-        this.ctx.beginPath();
-        this.ctx.arc(360, 260, 5, 0, Math.PI * 2);
-        this.ctx.fill();
+    draw(ctx) {
+        ctx.fillText(this.theta, 100, 100);
+        ctx.fillStyle = "red";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 15, 0, Math.PI * 2);
+        ctx.fill();
     }
 
     calculate_tension() {
