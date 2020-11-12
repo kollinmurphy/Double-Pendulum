@@ -18,7 +18,7 @@ class Bob {
         this.clock = setInterval(function () {
             self.theta = calculate_theta(self.x, self.y, self.pivot.x, self.pivot.y);
             self.move_to_arc();
-
+            
             if (Math.abs(self.calculate_velocity()) < self.turnaround_sensitivity) { // detect direction changes
                 console.log("switch")
                 if (self.x < self.pivot.x) {
@@ -66,7 +66,7 @@ class Bob {
     }
 
     calculate_tension() {
-        return 9.8 * this.mass * Math.abs(Math.cos(this.theta * this.theta_dilation));
+        return this.mass * Math.abs(Math.cos(this.theta * this.theta_dilation));
     }
 
     calculate_velocity_x() {
@@ -78,7 +78,7 @@ class Bob {
     }
 
     calculate_velocity() {
-        return Math.sqrt(this.radius * this.calculate_tension() / this.mass);
+        return 8 * Math.sqrt(this.radius * this.calculate_tension() / this.mass);
     }
 }
 
