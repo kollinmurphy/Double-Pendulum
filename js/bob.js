@@ -5,6 +5,11 @@ class Bob {
         this.pivot = pivot;
         this.theta = theta;
         this.radius = radius;
+        console.log(theta);
+        console.log(theta / Math.PI * 2);
+        this.theta_dilation = Math.PI / (2 * theta);
+        // this.theta_dilation = 1;
+        this.turnaround_sensitivity = 1.5;
         this.cw = false;
 
         this.move_to_arc();
@@ -14,7 +19,8 @@ class Bob {
             self.theta = calculate_theta(self.x, self.y, self.pivot.x, self.pivot.y);
             self.move_to_arc();
 
-            if (Math.abs(self.calculate_velocity_x()) < 0.01) { // detect direction changes
+            if (Math.abs(self.calculate_velocity()) < self.turnaround_sensitivity) { // detect direction changes
+                console.log("switch")
                 if (self.x < self.pivot.x) {
                     self.cw = true;
                 } else {
@@ -39,8 +45,10 @@ class Bob {
     }
 
     draw(ctx) {
+        ctx.fillStyle = "black";
+        ctx.fillText(this.theta, 100, 100);
         ctx.strokeStyle = "black";
-        ctx.moveTo(this.x, (this.y > this.pivot.y) ? this.y : this.pivot.y * 2 - this.y);
+        ctx.moveTo(this.x, this.y);
         ctx.lineTo(this.pivot.x, this.pivot.y);
         ctx.stroke();
         ctx.fillStyle = "red";
@@ -52,11 +60,13 @@ class Bob {
     move_to_arc() {
         // move to correct coordinates from polar coordinates
         this.x = this.pivot.x + Math.sin(this.theta) * this.radius;
+        this.painter.paint();
         this.y = this.pivot.y + Math.cos(this.theta) * this.radius;
+        this.painter.paint();
     }
 
     calculate_tension() {
-        return 9.8 * this.mass * Math.abs(Math.cos(this.theta));
+        return 9.8 * this.mass * Math.abs(Math.cos(this.theta * this.theta_dilation));
     }
 
     calculate_velocity_x() {
@@ -82,8 +92,8 @@ function calculate_theta(x, y, pivot_x, pivot_y) {
 
     if (diff_y === 0 && diff_x < 0) { theta = 3 * Math.PI / 2; } // adjust for axes
     if (diff_y === 0 && diff_x > 0) { theta = Math.PI / 2; }
-    if (diff_x === 0 && diff_y > 0) { theta = Math.PI; }
-    if (diff_x === 0 && diff_y < 0) { theta = 0; }
+    if (diff_x === 0 && diff_y < 0) { theta = Math.PI; }
+    if (diff_x === 0 && diff_y > 0) { theta = 0; }
 
     if (theta < 0) { theta += Math.PI * 2; }
     if (theta > Math.PI * 2) { theta -= Math.PI * 2; }
