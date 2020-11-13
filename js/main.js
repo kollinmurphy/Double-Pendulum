@@ -13,6 +13,7 @@ window.onload = function() {
         let theta = calculate_theta(e.clientX, e.clientY, pivot.x, pivot.y);
         bob = new Bob(painter, 1, pivot, theta, calculate_distance(e.clientX, e.clientY, pivot));
         painter.addObject(bob);
+        painter.addObject(new Bob(painter, 1, bob, theta, 100));
         painter.paint();
     });
 };

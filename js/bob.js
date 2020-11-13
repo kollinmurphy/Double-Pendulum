@@ -3,17 +3,19 @@ class Bob {
         this.painter = painter;
         this.mass = mass;
         this.pivot = pivot;
+        
         this.theta = theta; // set theta and radius, move to correct x/y coordinates, then recalculate theta to be in correct domain
         this.radius = radius;
+        this.move_to_arc();
+        
         this.time = 0;
         this.g = 9.8;
-        this.move_to_arc();
         this.timestep = 10;
         this.theta = calculate_theta(this.x, this.y, this.pivot.x, this.pivot.y);
         this.thetaMax = this.theta;
         this.T = 2*Math.PI*Math.sqrt(this.radius/this.g);                   //Period
+        
         let self = this;
-
         this.clock = setInterval(function () {
             self.time += self.timestep;               
             self.calculate_xy(self.thetaMax, self.radius, self.g, self.time);
@@ -23,25 +25,28 @@ class Bob {
     }
 
     draw(ctx) {
-        ctx.fillStyle = "black";
-        ctx.fillText(this.theta, 100, 100);
+        // ctx.fillStyle = "black";
+        // ctx.fillText(this.theta, 100, 100);
+        ctx.beginPath();
         ctx.strokeStyle = "black";
         ctx.moveTo(this.x, this.y);
         ctx.lineTo(this.pivot.x, this.pivot.y);
         ctx.stroke();
+        ctx.closePath();
         ctx.fillStyle = "red";
+        ctx.strokeStyle = "red";
         ctx.beginPath();
         ctx.arc(this.x, this.y, 15, 0, Math.PI * 2);
         ctx.fill();
+        ctx.closePath();
     }
 
     move_to_arc() {
         // move to correct coordinates from polar coordinates
         this.x = this.pivot.x + Math.sin(this.theta) * this.radius;
-        this.painter.paint();
         this.y = this.pivot.y + Math.cos(this.theta) * this.radius;
-        this.painter.paint();
     }
+
     calculate_xy(thetaMax, radius, g, t){
         this.thetaMax *= .999;                                   //friction 
         t = t / 75;                                             //Slow it down
