@@ -11,6 +11,7 @@ class Bob {
         this.timestep = 10;
         this.theta = calculate_theta(this.x, this.y, this.pivot.x, this.pivot.y);
         this.thetaMax = this.theta;
+        this.T = 2*Math.PI*Math.sqrt(this.radius/this.g);                   //Period
         let self = this;
 
         this.clock = setInterval(function () {
@@ -42,9 +43,9 @@ class Bob {
         this.painter.paint();
     }
     calculate_xy(thetaMax, radius, g, t){
-        let T = 2*Math.PI*Math.sqrt(radius/g);                   //Period
-        t = t / 100;                                             //Slow it down
-        this.theta = thetaMax*Math.cos(2*Math.PI*t/T);           //Calculate new theta based on time differential
+        this.thetaMax *= .999;                                   //friction 
+        t = t / 75;                                             //Slow it down
+        this.theta = thetaMax*Math.cos(2*Math.PI*t/this.T);           //Calculate new theta based on time differential
         this.x = this.pivot.x + radius * Math.cos(this.theta);   //Update x and y
         this.y = this.pivot.y + radius * Math.sin(this.theta);
     }
