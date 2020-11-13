@@ -5,6 +5,7 @@ window.onload = function() {
     var bob;
     var count = 0;
     // var bob = new Bob(painter, 1, pivot, Math.PI * 1 / 4, 100);
+    // bob.ON = true;
 
     // painter.addObject(bob);
     painter.addObject(pivot);
@@ -22,10 +23,10 @@ window.onload = function() {
             bob2.ON = true;
         }
         else {
-        let theta = calculate_theta(e.clientX, e.clientY, pivot.x, pivot.y);
-        bob = new Bob(painter, 1, pivot, theta, calculate_distance(e.clientX, e.clientY, pivot));
-        painter.addObject(bob);
-        bob.ON = false;
+            let theta = calculate_theta(e.clientX, e.clientY, pivot.x, pivot.y);
+            bob = new Bob(painter, 1, pivot, theta, calculate_distance(e.clientX, e.clientY, pivot));
+            painter.addObject(bob);
+            bob.ON = false;
         }
     });
 };

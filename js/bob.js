@@ -7,7 +7,9 @@ class Bob {
         this.theta = theta; // set theta and radius, move to correct x/y coordinates, then recalculate theta to be in correct domain
         this.radius = radius;
         this.move_to_arc();
-        //this.trace[][] //array of recent points to keep highlighted?
+        this.path = new Path([this.x, this.y]);
+        this.painter.addObject(this.path);
+        // this.trace = [[]]; //array of recent points to keep highlighted?
         this.time = 0;
         this.g = 8;
         this.timestep = 10;
@@ -18,8 +20,9 @@ class Bob {
         let self = this;
         this.clock = setInterval(function () {
             if (self.ON){
-            self.time += self.timestep;               
-            self.calculate_xy(self.thetaMax, self.radius, self.g, self.time);
+                self.time += self.timestep;               
+                self.calculate_xy(self.thetaMax, self.radius, self.g, self.time);
+                self.path.addPoint([self.x, self.y]);
             }
             //if (self.trace.length > 50) {self.trace.pop()}  //Is pop() right? remove the first point
             self.move_to_arc();
@@ -28,8 +31,6 @@ class Bob {
     }
 
     draw(ctx) {
-        // ctx.fillStyle = "black";
-        // ctx.fillText(this.theta, 100, 100);
         ctx.beginPath();
         ctx.strokeStyle = "black";
         ctx.moveTo(this.x, this.y);
@@ -44,7 +45,7 @@ class Bob {
         ctx.closePath();
         // loop through each point. 
         // (use length - 1 b/c we use i + 1)
-        // for (int i; i<trace.length - 1; i++) {
+        // for (let i = 0; i < trace.length - 1; i++) {
         //     ctx.beginPath();
         //     ctx.strokeStyle = "green";
         //     moveTo(trace[i], trace[i][i]);
