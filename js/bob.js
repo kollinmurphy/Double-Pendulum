@@ -6,8 +6,8 @@ class Bob {
         this.ON = false;
         this.theta = theta; // set theta and radius, move to correct x/y coordinates, then recalculate theta to be in correct domain
         this.radius = radius;
-        this.move_to_arc();
         this.path = new Path([this.x, this.y]);
+        this.move_to_arc();
         this.painter.addObject(this.path);
         // this.trace = [[]]; //array of recent points to keep highlighted?
         this.time = 0;
@@ -22,7 +22,6 @@ class Bob {
             if (self.ON){
                 self.time += self.timestep;               
                 self.calculate_xy(self.thetaMax, self.radius, self.g, self.time);
-                self.path.addPoint([self.x, self.y]);
             }
             //if (self.trace.length > 50) {self.trace.pop()}  //Is pop() right? remove the first point
             self.move_to_arc();
@@ -59,6 +58,7 @@ class Bob {
         // move to correct coordinates from polar coordinates
         this.x = this.pivot.x + Math.sin(this.theta) * this.radius;
         this.y = this.pivot.y + Math.cos(this.theta) * this.radius;
+        this.path.addPoint([this.x, this.y]);
     }
 
     calculate_xy(thetaMax, radius, g, t){
