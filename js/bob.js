@@ -3,7 +3,7 @@ class Bob {
         this.painter = painter;
         this.mass = mass;
         this.pivot = pivot;
-        
+        this.ON = false;
         this.theta = theta; // set theta and radius, move to correct x/y coordinates, then recalculate theta to be in correct domain
         this.radius = radius;
         this.move_to_arc();
@@ -17,8 +17,10 @@ class Bob {
         
         let self = this;
         this.clock = setInterval(function () {
+            if (self.ON){
             self.time += self.timestep;               
             self.calculate_xy(self.thetaMax, self.radius, self.g, self.time);
+            }
             self.move_to_arc();
             self.painter.paint(); // draw all objects onto the canvas
         }, this.timestep);
