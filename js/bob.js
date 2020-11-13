@@ -25,6 +25,7 @@ class Bob {
             }
             //if (self.trace.length > 50) {self.trace.pop()}  //Is pop() right? remove the first point
             self.move_to_arc();
+            self.path.addPoint([self.x, self.y]);
             self.painter.paint(); // draw all objects onto the canvas
         }, this.timestep);
     }
@@ -58,7 +59,6 @@ class Bob {
         // move to correct coordinates from polar coordinates
         this.x = this.pivot.x + Math.sin(this.theta) * this.radius;
         this.y = this.pivot.y + Math.cos(this.theta) * this.radius;
-        this.path.addPoint([this.x, this.y]);
     }
 
     calculate_xy(thetaMax, radius, g, t){
