@@ -8,7 +8,7 @@ class Path {
     }
 
     draw(ctx) {
-        if (this.points.length > 100){
+        if (this.points.length > 300){
             this.points.shift();
         }
         ctx.beginPath();
