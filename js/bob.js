@@ -1,10 +1,13 @@
 class Bob {
     constructor(painter, mass, pivot, theta, radius, painterPath) {
         this.painter = painter;
+        this.first = false;
+        this.second = false;
+        this.pair;
         this.mass = mass;
         this.pivot = pivot;
         this.ON = false;
-        this.theta = theta; 
+        this.theta = theta; // set theta and radius, move to correct x/y coordinates, then recalculate theta to be in correct domain
         this.radius = radius;
         this.move_to_arc();
         this.hasPath = false;
@@ -19,7 +22,8 @@ class Bob {
         this.timestep = 10;
         this.theta = calculate_theta(this.x, this.y, this.pivot.x, this.pivot.y);
         this.thetaMax = this.theta;
-        this.T = 2 * Math.PI * Math.sqrt(this.radius / this.g); // period
+        this.T = 2*Math.PI*Math.sqrt(this.radius/this.g);                   //Period
+
         
         // let self = this;
         // this.clock = setInterval(function() {
@@ -51,20 +55,15 @@ class Bob {
     }
 
     move_to_arc() {
-        // move to correct coordinates from polar coordinates
         this.x = this.pivot.x + Math.sin(this.theta) * this.radius;
         this.y = this.pivot.y + Math.cos(this.theta) * this.radius;
     }
 
     calculate_xy(thetaMax, radius, g, t){
-        // friction
-        this.thetaMax *= .999;
-        // slow down
-        t = t / 75;
-        //Calculate new theta based on time differential
-        this.theta = thetaMax * Math.cos(2 * Math.PI * t / this.T);
-        //Update x and y         
-        this.x = this.pivot.x + radius * Math.cos(this.theta);   
+        this.thetaMax *= .999;                                   //friction 
+        t = t / 75;                                             //Slow it down
+        this.theta = thetaMax*Math.cos(2*Math.PI*t/this.T);           //Calculate new theta based on time differential
+        this.x = this.pivot.x + radius * Math.cos(this.theta);   //Update x and y
         this.y = this.pivot.y + radius * Math.sin(this.theta);
     }
 }

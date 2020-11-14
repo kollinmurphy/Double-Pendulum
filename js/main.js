@@ -31,6 +31,7 @@ window.onload = function() {
             bob = new Bob(painter, 1, pivot, theta, calculate_distance(e.clientX, e.clientY, pivot), false);
             painter.addObject(bob);
             // bob.ON = false;
+            bob.first = true;
         }
     });
 };
