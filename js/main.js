@@ -21,12 +21,16 @@ window.onload = function() {
             painter.paint();
             bob.ON = true;
             bob2.ON = true;
+            bob2.second = true;
+            bob2.pair = bob;
+            bob.pair = bob2;
         }
         else {
             let theta = calculate_theta(e.clientX, e.clientY, pivot.x, pivot.y);
             bob = new Bob(painter, 1, pivot, theta, calculate_distance(e.clientX, e.clientY, pivot));
             painter.addObject(bob);
             bob.ON = false;
+            bob.first = true;
         }
     });
 };
