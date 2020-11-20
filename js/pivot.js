@@ -8,7 +8,7 @@ class Pivot {
         ctx.fillStyle = "blue";
         ctx.strokeStyle = "blue";
         ctx.beginPath();
-        ctx.arc(360, 260, 5, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, 5, 0, Math.PI * 2);
         ctx.fill();
         ctx.closePath();
     }

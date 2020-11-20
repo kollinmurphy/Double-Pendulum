@@ -2,7 +2,7 @@ window.onload = function() {
     let cvs = document.querySelector("#mainCanvas");
     var painter = new Painter(cvs);
     var painterPath = new Painter(document.querySelector("#mainCanvas2"), false);
-    var pivot = new Pivot(360, 260);
+    var pivot = new Pivot(350, 300);
     var bob;
     var count = 0;
     // var bob = new Bob(painter, 1, pivot, Math.PI * 1 / 4, 100);
