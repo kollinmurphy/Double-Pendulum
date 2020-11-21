@@ -14,7 +14,7 @@ class Path {
         if (this.points.length > 1) {
 
             ctx.beginPath();
-            ctx.strokeStyle = "rgba(0,150,0,0.1)";
+            ctx.strokeStyle = "rgba(0,150,0,1)";
             ctx.moveTo(this.points[this.points.length - 2][0], this.points[this.points.length - 2][1]);
             ctx.lineTo(this.points[this.points.length - 1][0], this.points[this.points.length - 1][1]);
             // for (let i = 0; i < this.points.length; i++) {
